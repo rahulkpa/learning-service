@@ -24,6 +24,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ResponseEntity<Object> handleUnAuthorizedException(Exception e, WebRequest request){
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setStatus("FAILED");
+        errorDTO.setMessage(e.getMessage());
+        errorDTO.setPath(request.getContextPath());
+        errorDTO.setTimeStamp(new Date());
+        return new ResponseEntity<>(errorDTO,HttpStatus.UNAUTHORIZED);
+
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleInternalException(Exception e, WebRequest request){
         ErrorDTO errorDTO = new ErrorDTO();
