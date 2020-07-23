@@ -12,14 +12,26 @@ import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler(EmployeeNotFoundExceptions.class)
-    public ResponseEntity<Object> handleUserNotFoundException(Exception e, WebRequest request){
+    public ResponseEntity<Object> handleEmployeeNotFoundException(Exception e, WebRequest request){
         ErrorDTO errorDTO = new ErrorDTO();
         errorDTO.setStatus("SUCESS");
         errorDTO.setMessage(e.getMessage());
         errorDTO.setPath(request.getContextPath());
         errorDTO.setTimeStamp(new Date());
         return new ResponseEntity<>(errorDTO,HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleInternalException(Exception e, WebRequest request){
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setStatus("FAILED");
+        errorDTO.setMessage(e.getMessage());
+        errorDTO.setPath(request.getContextPath());
+        errorDTO.setTimeStamp(new Date());
+        return new ResponseEntity<>(errorDTO,HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 }
